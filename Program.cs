@@ -39,17 +39,17 @@ var context = new IndustryConnectWeek2Context();
 //}
 
 
+//--------------------------------------
+//var sales = context.Sales.Include(c => c.Customer)
+//    .Include(p => p.Product).ToList();
 
-var sales = context.Sales.Include(c => c.Customer)
-    .Include(p => p.Product).ToList();
+//var salesDto = new List<SaleDto>();
 
-var salesDto = new List<SaleDto>();
-
-foreach (Sale s in sales)
-{
-    salesDto.Add(new SaleDto(s));
-}
-
+//foreach (Sale s in sales)
+//{
+//    salesDto.Add(new SaleDto(s));
+//}
+//------------------------------------
 
 
 //context.Sales.Add(new Sale
@@ -64,21 +64,23 @@ foreach (Sale s in sales)
 //context.SaveChanges();
 
 
+//------------------
+
+//Console.WriteLine("Which customer record would you like to update?");
+
+//var response = Convert.ToInt32(Console.ReadLine());
+
+//var customer = context.Customers.Include(s => s.Sales)
+//    .ThenInclude(p => p.Product)
+//    .FirstOrDefault(c => c.Id == response);
 
 
-Console.WriteLine("Which customer record would you like to update?");
-
-var response = Convert.ToInt32(Console.ReadLine());
-
-var customer = context.Customers.Include(s => s.Sales)
-    .ThenInclude(p => p.Product)
-    .FirstOrDefault(c => c.Id == response);
+//var total = customer.Sales.Select(s => s.Product.Price).Sum();
 
 
-var total = customer.Sales.Select(s => s.Product.Price).Sum();
+//var customerSales = context.CustomerSales.ToList();
 
-
-var customerSales = context.CustomerSales.ToList();
+//-------------------------
 
 //var totalsales = customer.Sales
 
@@ -101,14 +103,54 @@ var customerSales = context.CustomerSales.ToList();
 //}
 
 
+//--Week 3 Software developer intern (Entity Framework)
+//--1\Using the linq queries retrieve a list of all customers from the database who don't have sales
+
+var customer = context.Customers.Where(s => !s.Sales.Any()).ToList();
+
+foreach (var c in customer)
+{
+    Console.WriteLine($"{c.FirstName} {c.LastName}");
+}
+
+//--2\Insert a new customer with a sale record
+
+context.Customers.Add(new Customer
+{
+    //Id = 9,
+    FirstName = "Alice",
+    LastName = "Brown",
+    DateOfBirth = DateTime.Now.AddYears(-20)
+});
+
+context.Sales.Add(new Sale
+{
+    //Id = 3,
+    CustomerId = 8,
+    ProductId = 1,
+    DateSold = DateTime.Now,
+    StoreId = 1
+});
+
+context.SaveChanges();
+
+//--3\Add a new store
+
+context.Stores.Add(new Store
+{
+    Name = "London"
+});
+
+context.SaveChanges();
+
+//--4\Find the list of all stores that have sales
+
+var store = context.Stores.Where(c => c.Sales.Any()).ToList();
+
+foreach (var s in store)
+{
+    Console.WriteLine($"{s.Id} {s.Name}");
+}
 
 Console.ReadLine();
-
-
-
-
-
-
-
-
 
