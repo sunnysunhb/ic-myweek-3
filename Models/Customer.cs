@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Week3EntityFramework.Models;
+
+public partial class Customer
+{
+    public int Id { get; set; }
+
+    public string? FirstName { get; set; }
+
+    public string? LastName { get; set; }
+
+    public DateTime? DateOfBirth { get; set; }
+
+    public decimal? Price { get; set; }
+
+    public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
+}
